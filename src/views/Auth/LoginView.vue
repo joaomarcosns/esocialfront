@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import Cookie from "js-cookie";
 import useVuelidate from "@vuelidate/core";
 import { required, email, helpers } from "@vuelidate/validators";
 import { reactive, computed } from "vue";
@@ -101,7 +102,10 @@ export default {
       api
         .post("/auth/login", data)
         .then((response) => {
-          console.log(response);
+          if (Cookies.get("_myapp_token")) {
+            Cookies.remove("_myapp_token");
+          }
+          Cookie.set("_myapp_token", response.data.access_token);
         })
         .catch((error) => {
           console.log(error.response);
