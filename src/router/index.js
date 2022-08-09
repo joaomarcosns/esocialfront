@@ -4,10 +4,11 @@ import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/Auth/LoginView.vue'
 import CadastraView from '../views/Auth/CadastraView.vue'
 import Guard from '../services/middleware' 
+import Block from '../services/blockauthentication'
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: HomeView
   },
@@ -20,7 +21,8 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: LoginView
+    component: LoginView,
+    beforeEnter: Block.block
   },
   {
     path: '/cadastra',
