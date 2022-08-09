@@ -105,7 +105,7 @@ export default {
           Cookie.set("_myapp_token", response.data.access_token);
         })
         .catch((error) => {
-          console.log(error.response);
+          alert(error.response.data.message);
         });
     },
   },

@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/Auth/LoginView.vue'
 import CadastraView from '../views/Auth/CadastraView.vue'
+import Guard from '../services/middleware' 
 
 const routes = [
   {
@@ -13,7 +14,8 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    component: AboutView
+    component: AboutView,
+    beforeEnter: Guard.auth
   },
   {
     path: '/login',
