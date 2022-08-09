@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid vh-100">
-    <div class="" style="margin-top: 200px">
+    <div class="text-end" style="margin-top: 9%">
       <div class="rounded d-flex justify-content-center">
         <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
           <div class="text-center">
@@ -47,12 +47,17 @@
                   {{ v$.password.$errors[0].$message }}
                 </span>
               </div>
-              <button class="btn btn-primary text-center mt-2">Entra</button>
+              <button class="btn btn-primary mt-2">Entra</button>
+              
               <p class="text-center mt-5">
                 Voce não tem conta?
                 <a href="#" class="text-primary">Criar senha</a>
               </p>
-              <a href="#" class="text-center text-primary">Esqueceu a senha?</a>
+              <a
+                href="#"
+                class="d-flex justify-content-center align-items-center text-primary"
+                >Esqueceu a senha?</a
+              >
             </div>
           </form>
         </div>
