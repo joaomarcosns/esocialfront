@@ -106,10 +106,7 @@
                   {{ v$.password.confirm.$errors[0].$message }}
                 </span>
               </div>
-              <button
-                class="btn btn-primary text-center mt-2"
-                type="submit"
-              >
+              <button class="btn btn-primary text-center mt-2" type="submit">
                 Entra
               </button>
               <p class="text-center mt-5">
@@ -125,6 +122,8 @@
 </template>
 
 <script>
+import router from "@/router";
+import api from "@/services/api";
 import useVuelidate from "@vuelidate/core";
 import {
   required,
@@ -213,7 +212,28 @@ export default {
     submit() {
       this.v$.$validate();
       if (!this.v$.$error) {
-        alert("Form successfully submitted.");
+        var data = {
+          name: this.state.name,
+          email: this.state.email.email,
+          email_confirmation: this.state.email.confirm,
+          password: this.state.password.password,
+          password_confirmation: this.state.password.confirm,
+        };
+        var headers = {
+              'Content-Type': 'application/json'
+        }
+        api
+          .post("/auth/register", data, {headers:headers})
+          .then((response) => {
+              alert(response.data.message);
+              router.push('login')
+          })
+          .catch((error) => {
+            var messageError = Object.entries(error.response.data.errors);
+            messageError.forEach((element) => {
+              alert(element[1]);
+            });
+          });
       } else {
         alert("Form failed to validate");
       }
