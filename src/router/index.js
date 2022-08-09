@@ -22,11 +22,11 @@ const routes = [
     component: () => import("@/views/Auth/CadastraView.vue"),
     beforeEnter: Block.block
   },
-  // {
-  //   path: '*',
-  //   name: 'error',
-  //   component: Error404View,
-  // }
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import("@/views/Errors/Error404View.vue"),
+  },
 ]
 
 const router = createRouter({
