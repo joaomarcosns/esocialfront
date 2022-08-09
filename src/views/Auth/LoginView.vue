@@ -48,7 +48,7 @@
                 </span>
               </div>
               <button class="btn btn-primary mt-2">Entra</button>
-              
+
               <p class="text-center mt-5">
                 Voce não tem conta?
                 <a href="#" class="text-primary">Criar senha</a>
@@ -72,6 +72,7 @@ import useVuelidate from "@vuelidate/core";
 import { required, email, helpers } from "@vuelidate/validators";
 import { reactive, computed } from "vue";
 import api from "@/services/api";
+import router from "@/router";
 export default {
   setup() {
     const state = reactive({
@@ -108,6 +109,7 @@ export default {
         .post("/auth/login", data)
         .then((response) => {
           Cookie.set("_myapp_token", response.data.access_token);
+          router.push({ name: "home" });
         })
         .catch((error) => {
           alert(error.response.data.message);
