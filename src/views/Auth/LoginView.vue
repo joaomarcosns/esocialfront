@@ -102,9 +102,6 @@ export default {
       api
         .post("/auth/login", data)
         .then((response) => {
-          if (Cookies.get("_myapp_token")) {
-            Cookies.remove("_myapp_token");
-          }
           Cookie.set("_myapp_token", response.data.access_token);
         })
         .catch((error) => {
