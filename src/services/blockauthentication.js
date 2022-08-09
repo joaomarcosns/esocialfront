@@ -8,7 +8,7 @@ export default {
             "Authorization": `Bearer ${token}`
         }
         if (token) {
-            next('/home');
+            next('/');
         }
         next()
     },

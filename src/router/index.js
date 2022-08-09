@@ -1,34 +1,32 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import AboutView from '../views/AboutView.vue'
-import LoginView from '../views/Auth/LoginView.vue'
-import CadastraView from '../views/Auth/CadastraView.vue'
 import Guard from '../services/middleware' 
 import Block from '../services/blockauthentication'
+import Error404View from '@/views/Errors/Error404View.vue'
 
 const routes = [
   {
-    path: '/home',
+    path: '/',
     name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: AboutView,
+    component: () => import("@/views/HomeView.vue"),
     beforeEnter: Guard.auth
   },
   {
     path: '/login',
     name: 'login',
-    component: LoginView,
+    component: () => import("@/views/Auth/LoginView.vue"),
     beforeEnter: Block.block
   },
   {
     path: '/cadastra',
     name: 'cadastra',
-    component: CadastraView
-  }
+    component: () => import("@/views/Auth/CadastraView.vue"),
+    beforeEnter: Block.block
+  },
+  // {
+  //   path: '*',
+  //   name: 'error',
+  //   component: Error404View,
+  // }
 ]
 
 const router = createRouter({
