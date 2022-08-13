@@ -23,6 +23,12 @@ const routes = [
     beforeEnter: Block.block
   },
   {
+    path: '/dominio/registar',
+    name: 'registarDomino',
+    component: () => import("@/views/Register.vue"),
+    beforeEnter: Block.block
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import("@/views/Errors/Error404View.vue"),

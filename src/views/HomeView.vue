@@ -35,6 +35,10 @@
         <button class="btn btn-success ms-2" @click.prevent="fileExport">
           Exportar <i class="fa-solid fa-file-export"></i>
         </button>
+
+        <a class="btn btn-primary ms-2" :to="registarDomino">
+          Cadastrar <i class="fa-solid fa-plus"></i>
+        </a>
       </div>
       <div class="table-responsive mt-4">
         <table class="table table-striped table-bordered">
