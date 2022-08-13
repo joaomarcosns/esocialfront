@@ -1,6 +1,6 @@
 <template>
   <div class="rounded d-flex justify-content-center mt-5">
-    <div class="col-md-10 col-sm-12 shadow-lg p-5 bg-light">
+    <div class="col-md-11 col-sm-12 shadow-lg p-5 bg-light">
       <div class="text-center">
         <h3 class="text-primary">Listagem dos Domínios</h3>
       </div>
@@ -44,12 +44,28 @@
         <table class="table table-striped table-bordered">
           <thead>
             <tr>
-              <th class="text-center">Teste</th>
-              <th>Teste</th>
-              <th>Teste</th>
-              <th>Teste</th>
+              <th>Domínio</th>
+              <th>Tld</th>
+              <th>Data de registro</th>
+              <th>Data de Atualização</th>
+              <th>Registrador</th>
+              <th>Nome dos servições</th>
             </tr>
           </thead>
+          <tbody>
+            <tr v-for="data of tableData" :key="data.id">
+              <td>{{ data.name }}</td>
+              <td>{{ data.tld }}</td>
+              <td>{{ data.created_at }}</td>
+              <td>{{ data.updated_at }}</td>
+              <td>{{ data.registers.name }}</td>
+              <td>
+                <div v-for="(names_server) in data.names_servers">
+                    {{ names_server.names_server }}
+                </div>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -109,10 +125,16 @@
 import api from "@/services/api";
 import Cookie from "js-cookie";
 export default {
-  setup() {
+  data() {
     return {
       file: "",
+      tableData: []
     };
+  },
+  created(){
+    this.getAllData().then((response) => {
+      this.tableData = response.data.data
+    }).catch()
   },
   methods: {
     fileExport() {
@@ -189,6 +211,15 @@ export default {
             alert(element[1]);
           });
         });
+    },
+    getAllData() {
+      var headers = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${Cookie.get("_myapp_token")}`,
+      };
+      const data = api.get("/domains/", { headers: headers })
+      return data
     },
   },
 };
