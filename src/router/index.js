@@ -25,8 +25,8 @@ const routes = [
   {
     path: '/dominio/registar',
     name: 'registarDomino',
-    component: () => import("@/views/Register.vue"),
-    beforeEnter: Block.block
+    component: () => import("@/views/Domains/Register.vue"),
+    beforeEnter: Guard.auth
   },
   {
     path: '/:pathMatch(.*)*',

@@ -36,12 +36,12 @@
           Exportar <i class="fa-solid fa-file-export"></i>
         </button>
 
-        <a class="btn btn-primary ms-2" :to="registarDomino">
+        <a class="btn btn-primary ms-2" @click="registarDomino">
           Cadastrar <i class="fa-solid fa-plus"></i>
         </a>
       </div>
       <div class="table-responsive mt-4">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered" id="myTable">
           <thead>
             <tr>
               <th>Domínio</th>
@@ -122,6 +122,7 @@
 </template>
 
 <script>
+import router from "@/router";
 import api from "@/services/api";
 import Cookie from "js-cookie";
 export default {
@@ -221,6 +222,9 @@ export default {
       const data = api.get("/domains/", { headers: headers })
       return data
     },
+    registarDomino() {
+      router.push({ name: "registarDomino" });
+    }
   },
 };
 </script>
