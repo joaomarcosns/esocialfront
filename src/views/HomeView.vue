@@ -72,7 +72,10 @@
                 >
                   <i class="bi bi-pencil-square"></i>
                 </button>
-                <button class="btn btn-danger btn-sm ms-2">
+                <button
+                  v-on:click="destroy(data.id, data.name)"
+                  class="btn btn-danger btn-sm ms-2"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
@@ -261,6 +264,26 @@ export default {
     },
     edit(id) {
       router.push(`/dominio/edit/${id}`);
+    },
+    destroy(id, name) {
+      var result = confirm(`Deseja apagar o domínio ${name}?`);
+      if (result == true) {
+        var headers = {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${Cookie.get("_myapp_token")}`,
+        };
+        var data;
+        api
+          .post(`/domains/destroy/${id}`, data, {headers: headers})
+          .then((res) => {
+            alert(res.data.message);
+            location.reload();
+          })
+          .catch((error) => {
+            console.log(error.response);
+          });
+      }
     },
   },
 };
