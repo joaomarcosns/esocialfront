@@ -29,6 +29,12 @@ const routes = [
     beforeEnter: Guard.auth
   },
   {
+    path: '/dominio/edit/:id',
+    name: 'editDomino',
+    component: () => import("@/views/Domains/Edit.vue"),
+    beforeEnter: Guard.auth
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import("@/views/Errors/Error404View.vue"),

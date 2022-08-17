@@ -50,19 +50,31 @@
               <th>Data de Atualização</th>
               <th>Registrador</th>
               <th>Nome dos servições</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="data of tableData" :key="data.id">
               <td>{{ data.name }}</td>
               <td>{{ data.tld }}</td>
-              <td>{{ data.created_at }}</td>
-              <td>{{ data.updated_at }}</td>
+              <td>{{ this.formatDate(data.created_at) }}</td>
+              <td>{{ this.formatDate(data.updated_at) }}</td>
               <td>{{ data.registers.name }}</td>
               <td>
-                <div v-for="(names_server) in data.names_servers">
-                    {{ names_server.names_server }}
+                <div v-for="names_server in data.names_servers">
+                  {{ names_server.names_server }}
                 </div>
+              </td>
+              <td>
+                <button
+                  v-on:click="edit(data.id)"
+                  class="btn btn-warning btn-sm"
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-danger btn-sm ms-2">
+                  <i class="bi bi-trash"></i>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -129,13 +141,15 @@ export default {
   data() {
     return {
       file: "",
-      tableData: []
+      tableData: [],
     };
   },
-  created(){
-    this.getAllData().then((response) => {
-      this.tableData = response.data.data
-    }).catch()
+  created() {
+    this.getAllData()
+      .then((response) => {
+        this.tableData = response.data.data;
+      })
+      .catch();
   },
   methods: {
     fileExport() {
@@ -219,12 +233,18 @@ export default {
         Accept: "application/json",
         Authorization: `Bearer ${Cookie.get("_myapp_token")}`,
       };
-      const data = api.get("/domains/", { headers: headers })
-      return data
+      const data = api.get("/domains/", { headers: headers });
+      return data;
     },
     registarDomino() {
       router.push({ name: "registarDomino" });
-    }
+    },
+    formatDate(date) {
+      return new Date(date).toLocaleDateString("pt-BR");
+    },
+    edit(id) {
+      router.push(`/dominio/edit/${id}`);
+    },
   },
 };
 </script>

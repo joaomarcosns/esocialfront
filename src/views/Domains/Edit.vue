@@ -142,28 +142,20 @@
 </template>
 
 <script>
-import useVuelidate from "@vuelidate/core";
-import {
-  required,
-  email,
-  minLength,
-  maxLength,
-  sameAs,
-  helpers,
-} from "@vuelidate/validators";
 import api from "@/services/api";
 import Cookie from "js-cookie";
 import { reactive, computed } from "vue";
+import useVuelidate from "@vuelidate/core";
+import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 export default {
   setup() {
     const state = reactive({
+      id: "",
       register: "",
       name: "",
       tld: "",
       created_at: "",
       updated_at: "",
-      nameserver_1: "",
-      nameserver_2: "",
     });
     const rules = computed(() => {
       return {
@@ -234,6 +226,35 @@ export default {
     const v$ = useVuelidate(rules, state);
     return { state, v$ };
   },
+  created() {
+    this.state.id = this.$route.params.id;
+    var headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${Cookie.get("_myapp_token")}`,
+    };
+    api
+      .get(`/domains/show/${this.state.id}`, { headers: headers })
+      .then((response) => {
+        var data = response.data.data;
+        data = data[0];
+        this.state.register = data.registers.name;
+        this.state.name = data.name;
+        this.state.tld = data.tld;
+        this.state.created_at = data.created_at;
+        this.state.updated_at = data.updated_at;
+        this.state.nameserver_1 = data.names_servers[0].names_server
+          ? data.names_servers[0].names_server
+          : "";
+        this.state.nameserver_2 = data.names_servers[1].names_server
+          ? data.names_servers[1].names_server
+          : "";
+        console.log(this.state);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  },
   methods: {
     submit() {
       this.v$.$validate();
@@ -253,7 +274,7 @@ export default {
           Authorization: `Bearer ${Cookie.get("_myapp_token")}`,
         };
         api
-          .post("/domains/store", data, { headers: headers })
+          .put(`/domains/update/${this.state.id}`, data, { headers: headers })
           .then((response) => {
             alert(response.data.message);
           })
