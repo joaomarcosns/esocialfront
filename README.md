@@ -1,19 +1,42 @@
-# esocialfront
+<p align="center"><a href="#" target="_blank"></a>Teste da eSocial Front</p>
 
-## Project setup
-```
-yarn install
+## Descrição
+
+<p>Aqui sera listado os requisitos necessários, o gia de instalação do programa.</p>
+
+## Lista de requisitos
+
+Logo abaixo será listado os requisitos necessários para instalação do programa.
+
+- [Node 16.17.0](https://nodejs.org/en/).
+
+## Guia de instalação
+
+- Clone o repositorio do projeto no diretorio raiz do projeto.
+
+```bash
+    git clone https://github.com/joaomarcosns/esocialfront.git
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
+- Baixa todos as dependências do projeto.
+
+```bash
+    yarn install
 ```
 
-### Compiles and minifies for production
-```
-yarn build
+### Colocar link da Api
+
+Vai em `services/api` em `baseURL` coloque a url cedida quando usou o comando `php artisan serve` pela <a href="https://github.com/joaomarcosns/eSocialApi">api</a>.
+Apos isso use o comando
+
+```bash
+    yarn serve
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Licença
+
+- [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/).
+
+```
+
+```
