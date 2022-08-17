@@ -106,7 +106,7 @@
           <div class="modal-body">
             <div>
               <input
-                @change.stop.prevent="file"
+                @change="newFile"
                 type="file"
                 name="file"
                 class="form-control"
@@ -181,12 +181,35 @@ export default {
         Accept: "application/json",
         Authorization: `Bearer ${Cookie.get("_myapp_token")}`,
       };
+      api.interceptors.response.use(
+        (response) => {
+          return response;
+        },
+        async (error) => {
+          const { request, response } = error;
+
+          if (
+            request.responseType === "blob" &&
+            response.data instanceof Blob &&
+            response.data.type &&
+            response.data.type.toLowerCase().includes("json")
+          ) {
+            return await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                response.data = JSON.parse(reader.result);
+                resolve(Promise.reject(error));
+              };
+              reader.onerror = () => reject(error);
+              reader.readAsText(response.data);
+            });
+          }
+
+          return await Promise.reject(error);
+        }
+      );
       api
-        .get(
-          "/domains/modelImport",
-          { headers: headers },
-          { ResponseType: "blob" }
-        )
+        .get("/domains/modelImport", { headers: headers, responseType: "blob" })
         .then((res) => {
           var fileUrl = window.URL.createObjectURL(new Blob([res.data]));
           var docUrl = document.createElement("a");
@@ -196,13 +219,10 @@ export default {
           docUrl.click();
         })
         .catch((error) => {
-          var messageError = Object.entries(error.response.data.errors);
-          messageError.forEach((element) => {
-            alert(element[1]);
-          });
+          alert(error.response);
         });
     },
-    file(event) {
+    newFile(event) {
       this.file = event.target.files[0];
     },
     importFile() {
@@ -221,10 +241,7 @@ export default {
           alert(response.data.message);
         })
         .catch((error) => {
-          var messageError = Object.entries(error.response.data.errors);
-          messageError.forEach((element) => {
-            alert(element[1]);
-          });
+          console.error(error.response);
         });
     },
     getAllData() {
